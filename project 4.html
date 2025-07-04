@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>project 4</title>
+  </head>
+  <body>
+    <h1>This is a code for printing random numbers using let and while loops.</h1>
+    <script>
+      let count = 0;
+      let numbers = [];
+
+      while (count < 5) {
+        let randomNum = Math.floor(Math.random() * 100) + 1;
+        numbers.push(randomNum);
+        count++;
+      }
+
+      document.write("Random numbers: " + numbers.join(", "));
+    </script>
+  </body>
+</html>
