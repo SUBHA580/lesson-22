@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank App - Income & Expenses Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; }
+    .balance { text-align: center; margin: 20px 0; font-size: 1.2em; }
+    .income-expense {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .income, .expense {
+      width: 45%;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .income { background: #d4f7d4; }
+    .expense { background: #f7d4d4; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button { cursor: pointer; background: #007bff; color: #fff; border: none; }
+    button:hover { background: #0056b3; }
+    ul { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .inc { background: #e8fce8; }
+    .exp { background: #fce8e8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💳 Bank App</h1>
+    <div class="balance">Balance: $<span id="balance">0.00</span></div>
+    <div class="income-expense">
+      <div class="income">Income: $<span id="income">0.00</span></div>
+      <div class="expense">Expense: $<span id="expense">0.00</span></div>
+    </div>
+
+    <input type="text" id="desc" placeholder="Description">
+    <input type="number" id="amount" placeholder="Amount">
+    <button onclick="addTransaction('income')">Add Income</button>
+    <button onclick="addTransaction('expense')" style="background:#dc3545">Add Expense</button>
+
+    <h3>Transaction History</h3>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+    function updateUI() {
+      const balanceEl = document.getElementById("balance");
+      const incomeEl = document.getElementById("income");
+      const expenseEl = document.getElementById("expense");
+      const listEl = document.getElementById("list");
+
+      let income = 0, expense = 0;
+      listEl.innerHTML = "";
+
+      transactions.forEach(t => {
+        if (t.type === "income") income += t.amount;
+        else expense += t.amount;
+
+        const li = document.createElement("li");
+        li.className = t.type === "income" ? "inc" : "exp";
+        li.innerHTML = `<span>${t.text}</span><span>${t.type === "income" ? "+" : "-"}$${t.amount.toFixed(2)}</span>`;
+        listEl.appendChild(li);
+      });
+
+      balanceEl.textContent = (income - expense).toFixed(2);
+      incomeEl.textContent = income.toFixed(2);
+      expenseEl.textContent = expense.toFixed(2);
+
+      localStorage.setItem("transactions", JSON.stringify(transactions));
+    }
+
+    function addTransaction(type) {
+      const desc = document.getElementById("desc").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+
+      if (!desc || isNaN(amount) || amount <= 0) {
+        alert("Please enter valid description and amount");
+        return;
+      }
+
+      transactions.unshift({ text: desc, amount, type });
+      document.getElementById("desc").value = "";
+      document.getElementById("amount").value = "";
+      updateUI();
+    }
+
+    // Initial load
+    updateUI();
+  </script>
+</body>
+</html>
