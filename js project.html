@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sum and Trig</title>
+</head>
+<body>
+  <script>
+    // Sum function
+    function sumOfNumbers(a, b, c) {
+      return a + b + c;
+    }
+
+    let sum = sumOfNumbers(10, 20, 30);
+    document.write("Sum:", sum);
+
+    // Trigonometric values function
+    function trigValues(degree) {
+      let rad = degree * (Math.PI / 180);
+      document.write("For", degree, "degrees:" +"<br>");
+      document.write("sin:", Math.sin(rad) +"<br>");
+      document.write("cos:", Math.cos(rad) +"<br>");
+      document.write("tan:", Math.tan(rad) +"<br>");
+    }
+
+    trigValues(30);
+    trigValues(45);
+  </script>
+</body>
+</html>
